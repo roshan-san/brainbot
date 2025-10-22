@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:17
+    container_name: brainbot-postgres
+    environment:
+      POSTGRES_USER: brainbot
+      POSTGRES_PASSWORD: brainbot
+      POSTGRES_DB: brainbot
+    ports:
+      - "5431:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - quiz-network
+
+volumes:
+  pgdata:brainbot
+
+networks:
+  brainbot-network:
+    driver: bridge

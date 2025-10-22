@@ -1,0 +1,34 @@
+# Node
+node_modules
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Build outputs
+dist
+build
+out
+.nx
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Editor stuff
+.vscode
+.idea
+.DS_Store
+
+# Coverage / tests
+coverage
+*.tsbuildinfo
+
+# Vite
+*.cache
+vite.config.ts.timestamp*
+
+# Turbo / Nx / pnpm workspace
+.turbo
+.nx
+.pnpm-store
