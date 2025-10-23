@@ -1,7 +1,10 @@
+version: "3.9"
+
 services:
   db:
     image: postgres:17
     container_name: brainbot-postgres
+    restart: always
     environment:
       POSTGRES_USER: brainbot
       POSTGRES_PASSWORD: brainbot
@@ -11,10 +14,10 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
-      - quiz-network
+      - brainbot-network
 
 volumes:
-  pgdata:brainbot
+  pgdata:
 
 networks:
   brainbot-network:

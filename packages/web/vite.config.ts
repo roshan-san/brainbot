@@ -6,9 +6,7 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite'
 export default ({ mode }:{mode:any}) => {
 
   const env = loadEnv(mode, process.cwd(), '');
-
-  console.log(env.VITE_SERVER_URL);
-
+  
   return defineConfig({
     build: {
       outDir: './dist',

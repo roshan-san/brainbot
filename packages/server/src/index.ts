@@ -1,10 +1,9 @@
 import app from "./app";
-const port = 3000;
+
 export default {
-  port,
+  port:3000,
   fetch: app.fetch,
   development: true,
 }
-console.log("Server is running on port", port);
 
 export type AppType = typeof app;
