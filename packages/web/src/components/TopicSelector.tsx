@@ -19,15 +19,9 @@ interface TopicSelectorProps {
 }
 
 const predefinedTopics = [
-  "JavaScript",
-  "React",
   "TypeScript",
   "Node.js",
   "Python",
-  "Machine Learning",
-  "Web Development",
-  "Data Structures",
-  "Algorithms",
   "Computer Science",
   "History",
   "Geography",

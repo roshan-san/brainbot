@@ -1,17 +1,12 @@
 
-import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: BrainBotLanding,
 });
 
 import { motion } from "framer-motion";
-// shadcn/ui components (available in the environment). If you don't use shadcn, replace with plain elements.
 import { Button } from "@/components/ui/button";
-
-// Landing page component for BrainBot AI — a quiz app
-// Tailwind CSS required in the project.
-
 type Props = {
   onStart?: () => void;
 };
@@ -59,7 +54,7 @@ function BrainBotLanding({ onStart }: Props) {
             </motion.p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button onClick={()=>redirect({to:"/quiz"})}>Start a Quiz</Button>
+              <Button onClick={()=>{router.navigate({to:"/quiz"})}}>Start a Quiz</Button>
             </div>
           </div>
 

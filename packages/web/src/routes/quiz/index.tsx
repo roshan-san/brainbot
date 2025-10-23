@@ -20,6 +20,10 @@ function App() {
   const [timeLeft, setTimeLeft] = useState<number>(30);
   const [questions, setQuestions] = useState<Question[]>(QUESTIONS);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [questionTimes, setQuestionTimes] = useState<number[]>([]);
+  const [startTime, setStartTime] = useState<number>(0);
+  const [currentTopic, setCurrentTopic] = useState<string>("Quiz");
+  const [currentDifficulty, setCurrentDifficulty] = useState<string>("Medium");
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -39,6 +43,8 @@ function App() {
     setScore(0);
     setCurrentQuestion(0);
     setSelectedAnswer(null);
+    setQuestionTimes([]);
+    setStartTime(Date.now());
   };
 
   const handleAnswer = (index: number): void => {
@@ -48,6 +54,11 @@ function App() {
     if (isCorrect) {
       setScore((prev) => prev + 1);
     }
+
+    // Track time for this question
+    const questionStartTime = startTime + (currentQuestion * 30 * 1000); // Approximate start time for this question
+    const questionTime = (Date.now() - questionStartTime) / 1000;
+    setQuestionTimes(prev => [...prev, questionTime]);
 
     setTimeout(() => {
       if (currentQuestion < questions.length - 1) {
@@ -68,11 +79,15 @@ function App() {
         count,
       });
       setQuestions(generatedQuestions);
+      setCurrentTopic(topic);
+      setCurrentDifficulty(difficulty.charAt(0).toUpperCase() + difficulty.slice(1));
       setGameState("playing");
       setTimeLeft(30);
       setScore(0);
       setCurrentQuestion(0);
       setSelectedAnswer(null);
+      setQuestionTimes([]);
+      setStartTime(Date.now());
     } catch (error) {
       console.error('Failed to generate questions:', error);
       alert('Failed to generate questions. Please try again.');
@@ -83,13 +98,25 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl lg:max-w-6xl">
         {gameState === "start" && (
           <div className="p-8">
-            <StartScreen onStart={handleStart} />
-            <div className="mt-6 text-center">
-              <TopicSelector onTopicSelect={handleTopicSelect} isLoading={isLoading} />
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold text-gray-900 mb-4">Ready to test your knowledge?</h1>
+              <p className="text-lg text-gray-600 mb-8">Choose a topic and start your personalized quiz</p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+                <TopicSelector onTopicSelect={handleTopicSelect} isLoading={isLoading} />
+                <button
+                  onClick={handleStart}
+                  className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                >
+                  Start Quick Quiz
+                </button>
+              </div>
             </div>
+            
+            <StartScreen />
           </div>
         )}
         {gameState === "playing" && (
@@ -104,7 +131,7 @@ function App() {
             />
             <div className="mt-6 text-center text-gray-600">
               Score: {score}/{questions.length}
-            </div>
+            </div>  
           </div>
         )}
         {gameState === "end" && (
@@ -112,6 +139,10 @@ function App() {
             score={score}
             totalQuestions={questions.length}
             onRestart={handleStart}
+            timeSpent={Date.now() - startTime}
+            questionTimes={questionTimes}
+            topic={currentTopic}
+            difficulty={currentDifficulty}
           />
         )}
       </div>
